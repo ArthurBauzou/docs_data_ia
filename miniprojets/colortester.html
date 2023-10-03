@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    body {
+        background-color: rgb(230, 231, 216);
+    }
+
+    .title>h1 {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 92px;
+        color: rgb(36, 36, 36)
+    }
+
+    div#colortest {
+        margin: 48px;
+        /* border: 12px rgb(255, 255, 255) solid; */
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-between;
+        border-radius: 24px;
+        overflow: hidden;
+        position: relative;
+        /* min-width: 480px; */
+        height: 75%;
+        width: 520px;
+    }   
+    div.colorsample {
+        display: flex;
+        align-items: flex-end;
+        height: 92px;
+        padding-bottom: 12px;
+
+    }
+    div.colorsample:hover {
+        /* height: 104px; */
+        padding-left: 4px;
+    }
+    .colorsample>input {
+        cursor: pointer;
+        padding: 0px 12px;
+        font-size: 20px;
+        color: black;
+        font-weight: 800;
+        font-family: 'Share Tech Mono', monospace;
+        background-color: rgba(255, 255, 255, 33%);
+        margin: 8px 16px;
+        border-radius: 4px;
+        width: 80px;
+        height: 36px;
+        border: none;
+        flex-grow: 0;
+    }
+    .colorsample>input:hover {
+        background-color: rgba(255, 255, 255, 60%);
+
+    }
+    .colorsample>input:focus {
+        outline: none;
+        background-color: rgba(255, 255, 255, 80%);
+    }
+    /* .pluscontrols {
+        cursor: pointer;
+        font-size: 48px;
+        position: absolute;
+        margin-top: 230px;
+        background-color: white;
+        width: 36px;
+        opacity: 40%;
+        font-family: 'Share Tech Mono', monospace;
+        font-weight: 800;
+        user-select: none;
+    }
+    .pluscontrols.minus {
+        padding-left: 12px;
+        border-radius: 0px 20px 20px 0px;
+    }    
+    .pluscontrols.plus {
+        right: 0px;
+        padding-right: 12px;
+        text-align: end;
+        border-radius: 20px 0px 0px 20px;
+    }
+    .pluscontrols:hover {
+        opacity: 75%
+    } */
+    
+
+</style>
+
+<body>
+
+    <div class="title">
+        <h1>
+            .colortest()
+        </h1>
+    </div>
+
+    <div id="colortest">
+
+        <!-- <div class="pluscontrols minus">-</div> -->
+
+        <div class="colorsample">
+            <input type="text" maxlength="7" value="#">
+        </div>
+        <div class="colorsample">
+            <input type="text" maxlength="7" value="#">
+        </div>
+        <div class="colorsample">
+            <input type="text" maxlength="7" value="#">
+        </div>
+        <div class="colorsample">
+            <input type="text" maxlength="7" value="#">
+        </div>
+        <div class="colorsample">
+            <input type="text" maxlength="7" value="#">
+        </div>
+        <div class="colorsample">
+            <input type="text" maxlength="7" value="#">
+        </div>
+
+        <!-- <div class="pluscontrols plus">+</div> -->
+
+    </div>
+
+</body>
+<script>
+
+    let colorInputs = document.querySelectorAll(".colorsample>input")
+
+    colorInputs.forEach((el)=>{
+        el.addEventListener("input", changeColor)
+        el.addEventListener("paste", splitValues)
+    })
+
+    let defaultColors = [
+        "#2a5158", 
+        "#2e8a94", 
+        "#669a88", 
+        "#8c9e68", 
+        "#a7a356", 
+        "#baaa86"
+    ]
+    // go to https://farbvelo.elastiq.ch/ for more
+    
+    let target = colorInputs[0]
+    defaultColors.forEach(col=>{
+            if (col[0] == '#') {
+            target.value = col
+            target.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            target = target.parentElement.nextElementSibling.querySelector('input')
+        })
+
+    function changeColor(e){
+        let color = e.currentTarget.value
+        // forcer le '#'
+        if (color.length <=1) {
+            e.currentTarget.value = '#'
+            return
+        }
+        // empêcher de taper autre chose que des caractères hexadecimaux
+        if (color.length > 1 
+        && /[A-Fa-f0-9]/.test(color[color.length - 1]) == false) {
+            e.currentTarget.value = color.substring(0,color.length - 1)
+        }
+        // s‘active quand la couleur est complète
+        if (color.length < 7) {
+            return
+        }
+        e.currentTarget.parentElement.style.backgroundColor = color
+    }
+
+    function splitValues(e){
+        e.preventDefault()
+        let color = e.clipboardData.getData("text")
+        color = color.replace(/[\s\[\]'"]/g, '')
+        colarr = color.split(',')
+        let target = e.currentTarget
+        colarr.forEach(col=>{
+            if (col[0] == '#') {
+            target.value = col
+            target.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            target = target.parentElement.nextElementSibling.querySelector('input')
+        })
+    }
+
+
+</script>
+
+</html>
