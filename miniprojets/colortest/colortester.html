@@ -19,18 +19,24 @@
         color: rgb(36, 36, 36)
     }
 
-    div#colortest {
+    div.colwrapper {
+        display: flex;
+        flex-direction: row nowrap;
+        height: 75%;
         margin: 48px;
+        border-radius: 24px;
+        overflow: hidden;
+        width: 520px;
+    }
+    
+    div.colortest {
+        width: 50%;
         /* border: 12px rgb(255, 255, 255) solid; */
         display: flex;
         flex-flow: column nowrap;
         justify-content: space-between;
-        border-radius: 24px;
-        overflow: hidden;
         position: relative;
         /* min-width: 480px; */
-        height: 75%;
-        width: 520px;
     }   
     div.colorsample {
         display: flex;
@@ -102,49 +108,55 @@
             .colortest()
         </h1>
     </div>
+    <div class="colwrapper">
 
-    <div id="colortest">
-
-        <!-- <div class="pluscontrols minus">-</div> -->
-
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
+        <div class="colortest">
+    
+            <!-- <div class="pluscontrols minus">-</div> -->
+    
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            
         </div>
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
+        <div class="colortest">
+            
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>        
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            <div class="colorsample">
+                <input type="text" maxlength="7" value="#">
+            </div>
+            <!-- <div class="pluscontrols plus">+</div> -->
+    
         </div>
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
-        </div>
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
-        </div>
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
-        </div>
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
-        </div>
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
-        </div>        
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
-        </div>
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
-        </div>
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
-        </div>
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
-        </div>
-        <div class="colorsample">
-            <input type="text" maxlength="7" value="#">
-        </div>
-        <!-- <div class="pluscontrols plus">+</div> -->
-
     </div>
 
 </body>
@@ -158,23 +170,34 @@
     })
 
     let defaultColors = [
-        "#2a5158", 
-        "#2e8a94", 
-        "#669a88", 
-        "#8c9e68", 
-        "#a7a356", 
-        "#baaa86"
+        '#e1be94',
+        '#c47e5a',
+        '#dabf25',
+        '#1d706e',
+        '#3a95bf',
+        '#afc2c6',
+        '#e8e1d7',
+        '#90948c',
+        '#6e6156',
+        '#393337',
+        '#c0312c',
+        '#c333bc'
     ]
+
+    // let defaultColors = [
+    //     "#2a5158", 
+    //     "#2e8a94", 
+    //     "#669a88", 
+    //     "#8c9e68", 
+    //     "#a7a356", 
+    //     "#baaa86"
+    // ]
     // go to https://farbvelo.elastiq.ch/ for more
-    
-    let target = colorInputs[0]
-    defaultColors.forEach(col=>{
-            if (col[0] == '#') {
-            target.value = col
-            target.dispatchEvent(new Event('input', { bubbles: true }));
-            }
-            target = target.parentElement.nextElementSibling.querySelector('input')
-        })
+
+    for(i=0;i<colorInputs.length;i++) {
+        colorInputs[i].value = defaultColors[i]
+        colorInputs[i].dispatchEvent(new Event('input', { bubbles: true }))
+    }
 
     function changeColor(e){
         let color = e.currentTarget.value
@@ -201,12 +224,16 @@
         color = color.replace(/[\s\[\]'"]/g, '')
         colarr = color.split(',')
         let target = e.currentTarget
+        let column = target.parentElement.parentElement
         colarr.forEach(col=>{
             if (col[0] == '#') {
             target.value = col
             target.dispatchEvent(new Event('input', { bubbles: true }));
             }
             target = target.parentElement.nextElementSibling.querySelector('input')
+            if (target.parentElement == column.lastElementChild) {
+                target = column.nextElementSibling.firstElementChild.querySelector('input')
+            }
         })
     }
 
